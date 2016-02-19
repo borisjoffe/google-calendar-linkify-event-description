@@ -33,6 +33,8 @@ SOFTWARE.
 (function () {
 'use strict';
 
+var DBG = true;
+
 function getTextarea() {
 	return document.querySelectorAll('#coverinner textarea')[0];
 }
@@ -70,16 +72,41 @@ function appendAfter(element, html) {
 
 function main() {
 	var
-		textarea = getTextarea(),
-		desc = getDesc(textarea),
-		links = getLinks(desc),
+		textarea  = getTextarea(),
+		desc      = getDesc(textarea),
+		links     = getLinks(desc),
 		htmlLinks = links.map(A),
 		container = textarea,
-		div = DIV(htmlLinks);
+		div       = DIV(htmlLinks);
 
 	appendAfter(container, div);
 }
 
 main();
+
+function dbg() {
+	if (DBG) {
+		console.log.apply(console, arguments);
+	}
+}
+
+(function (oldPushState) {
+	// monkey patch pushState so that script works when navigating around Facebook
+	window.history.pushState = function () {
+		dbg('running pushState');
+		oldPushState.apply(window.history, arguments);
+		setTimeout(main, 1000);
+	};
+	dbg('monkey patched pushState');
+})(window.history.pushState);
+
+window.onpopstate = function () {
+	//dbg('pop state');
+	setTimeout(main, 1000);
+};
+
+window.onhashchange = main;
+
+window.addEventListener('load', main, true);
 
 }());
