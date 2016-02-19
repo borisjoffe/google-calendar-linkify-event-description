@@ -1,7 +1,6 @@
 # Google Calendar Linkify Event Description
 
-### Install from
-[GreasyFork](https://greasyfork.org/en/scripts/17183-linkify-google-calendar-event-description)
+### Install from [GreasyFork](https://greasyfork.org/en/scripts/17183-linkify-google-calendar-event-description)
 
 Features
 --------
